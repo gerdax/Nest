@@ -85,7 +85,7 @@ class CardManager {
         
         const currentX = e.type.includes('mouse') ? e.clientX : e.changedTouches[0].clientX;
         const deltaX = currentX - this.startX;
-        
+    
         if (Math.abs(deltaX) > 50) {
             const direction = deltaX > 0 ? 'right' : 'left';
             const nextCard = this.storyManager.getNextCard(this.passage, direction);
@@ -99,7 +99,7 @@ class CardManager {
             this.resetCard();
         }
     }
-    
+        
     resetCard() {
         this.mainCard.style.transition = 'transform 0.3s ease, background-size 0.3s ease, background-position 0.3s ease';
         this.mainCard.style.transform = 'none';

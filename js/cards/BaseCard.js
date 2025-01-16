@@ -1,7 +1,7 @@
 // js/cards/BaseCard.js
 class BaseCard {
     constructor(data) {
-        this.id = data.passageId;
+        this.id = data.cardId;
         this.cardType = data.cardType;
         this.subType = data.subType;
         this.text = data.mainText;
@@ -14,10 +14,10 @@ class BaseCard {
         return [];
     }
     logCardDetails() {
-        console.log(`Card Type: ${this.cardType}, Subtype: ${this.subType}`);
+        console.log(`Card Type: ${this.cardType}, Subtype: ${this.subType}, Name: ${this.id}`);
     }
     onAction() {
-        baseCard.logCardDetails(); // Logs: Card Type: base, Subtype: example
+       // baseCard.logCardDetails(); // Logs: Card Type: base, Subtype: example
     }
 
 

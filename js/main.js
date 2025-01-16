@@ -1,7 +1,7 @@
 // js/main.js
 let currentCardManager = null;
 
-window.setupCards = function(passageId) {
+window.setupCards = function(cardId) {
     const container = document.getElementById('card-container');
     if (!container) return;
     
@@ -11,7 +11,7 @@ window.setupCards = function(passageId) {
     
     container.innerHTML = '';
     
-    const passage = window.storyManager.getPassage(passageId);
+    const passage = window.storyManager.getPassage(cardId);
     if (!passage) return;
     
     const bottomImage = document.createElement('div');

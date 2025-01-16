@@ -1,7 +1,7 @@
-// js/StoryManager.js
 class StoryManager {
     constructor() {
         this.passages = new Map();
+        this.lastShownCardId = null; // Property to track the last shown card ID
         this.cardTypes = {
             'spatial': SpatialCard,
             'box': BoxCard,
@@ -25,12 +25,12 @@ class StoryManager {
                 const CardClass = this.cardTypes[row.cardType];
                 if (CardClass) {
                     const card = new CardClass(row);
-                    this.passages.set(row.passageId, card);
+                    this.passages.set(row.cardId, card);
                 }
             });
 
             if (rows.length > 0) {
-                this.startPassage = rows[0].passageId;
+                this.startPassage = rows[0].cardId;
             }
         } catch (error) {
             console.error('Error loading story:', error);
@@ -38,14 +38,21 @@ class StoryManager {
     }
 
     getNextCard(currentCard, direction) {
-        const possibleTypes = currentCard.getNextCardTypes();
+        const possibleTypes = currentCard.getNextCardTypes(direction);
         const possibleCards = Array.from(this.passages.values())
-            .filter(card => possibleTypes.includes(card.cardType));
-        return possibleCards[Math.floor(Math.random() * possibleCards.length)];
+            .filter(card => possibleTypes.includes(card.cardType) && card.id !== this.lastShownCardId);
+        
+        if (possibleCards.length === 0) {
+            return null; // No more cards available
+        }
+
+        const nextCard = possibleCards[Math.floor(Math.random() * possibleCards.length)];
+        this.lastShownCardId = nextCard.id; // Update the last shown card ID
+        return nextCard;
     }
 
-    getPassage(passageId) {
-        return this.passages.get(passageId);
+    getPassage(cardId) {
+        return this.passages.get(cardId);
     }
 
     getStartPassage() {

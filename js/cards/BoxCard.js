@@ -5,11 +5,16 @@ class BoxCard extends BaseCard {
         this.isLocked = this.subType === 'locked';
     }
 
-    getNextCardTypes() {
-        if (this.subType === 'locked') {
+    getNextCardTypes(direction) {
+        if (this.isLocked) {
             return ['spatial'];
         }
-        return ['item', 'spatial'];
+        if (direction === 'left') {
+            return ['spatial', 'event'];
+        } else if (direction === 'right') {
+            return ['item'];
+        }
+        return [];
     }
 
     onAction() {
