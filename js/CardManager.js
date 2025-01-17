@@ -47,36 +47,35 @@ class CardManager {
         
         const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         let deltaX = currentX - this.startX;
-        const maxDragDistance = 100;
+        const maxDragDistance = 75; // Reduced from 100 to make text appear earlier
         
         deltaX = Math.max(Math.min(deltaX, maxDragDistance), -maxDragDistance);
         const rotation = deltaX * 0.1;
         const absDeltaX = Math.abs(deltaX);
         const scaleFactor = 100 + Math.min(absDeltaX / 5, 10);
-
+    
         this.mainCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
         this.mainCard.style.backgroundSize = `${scaleFactor}%`;
-
-        const totalProgress = Math.min(absDeltaX / maxDragDistance, 1);
+    
+        const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1); // Adjusted to show text earlier
         
         if (absDeltaX > 0) {
             const scale = 0.85 + ((Math.min(absDeltaX / 100, 1)) * 0.15);
             this.ghostCard.style.opacity = totalProgress * 0.7;
             this.ghostCard.style.transform = `scale(${scale})`;
-
+    
             const choiceText = this.mainCard.querySelector('.choice-text');
+            choiceText.classList.remove('left', 'right');
+            
             if (deltaX < 0) {
                 choiceText.textContent = this.passage.leftChoice;
+                choiceText.classList.add('right');
                 choiceText.style.opacity = totalProgress;
             } else {
                 choiceText.textContent = this.passage.rightChoice;
+                choiceText.classList.add('left');
                 choiceText.style.opacity = totalProgress;
-            }
-        } else {
-            this.ghostCard.style.opacity = '0';
-            const choiceText = this.mainCard.querySelector('.choice-text');
-            choiceText.style.opacity = '0';
-        }
+            }}
     }
     
     handleEnd(e) {
@@ -109,6 +108,7 @@ class CardManager {
 
         this.ghostCard.style.opacity = '0';
         const choiceText = this.mainCard.querySelector('.choice-text');
+        choiceText.classList.remove('left', 'right');
         choiceText.style.opacity = '0';
     }
     
