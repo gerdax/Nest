@@ -9,8 +9,8 @@ class ItemCard extends BaseCard {
         return ['spatial'];
     }
 
-    onAction() {
-        console.log(`Picked up ${this.subType} item: ${this.id}`);
-        return true;
-    }
+    // onAction() {
+    //     console.log(`Picked up ${this.subType} item: ${this.id}`);
+    //     return true;
+    // }
 }

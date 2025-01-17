@@ -16,9 +16,9 @@ class BaseCard {
     logCardDetails() {
         console.log(`Card Type: ${this.cardType}, Subtype: ${this.subType}, Name: ${this.id}`);
     }
-    onAction() {
-       // baseCard.logCardDetails(); // Logs: Card Type: base, Subtype: example
-    }
+    // onAction() {
+    //     baseCard.logCardDetails(); // Logs: Card Type: base, Subtype: example
+    // }
 
 
 }

@@ -7,9 +7,9 @@ class SpatialCard extends BaseCard {
     getNextCardTypes() {
         switch(this.subType) {
             case 'fork':
-                return ['spatial', 'box'];
+                return ['spatial'];
             case 'road':
-                return ['spatial', 'box', 'item'];
+                return ['spatial', 'box'];
             default:
                 return ['spatial'];
         }

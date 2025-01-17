@@ -7,21 +7,26 @@ class BoxCard extends BaseCard {
 
     getNextCardTypes(direction) {
         if (this.isLocked) {
-            return ['spatial'];
-        }
-        if (direction === 'left') {
-            return ['spatial', 'event'];
-        } else if (direction === 'right') {
-            return ['item'];
+            if (direction === 'left') {
+                return ['spatial'];
+            } else if (direction === 'right') {
+                return ['item'];
+            }
+        } else {
+            if (direction === 'left') {
+                return ['spatial'];
+            } else if (direction === 'right') {
+                return ['spatial', 'item'];
+            }
         }
         return [];
     }
 
-    onAction() {
-        if (this.isLocked) {
-            console.log('This box is locked');
-            return false;
-        }
-        return true;
-    }
+    // onAction() {
+    //     if (this.isLocked) {
+    //         console.log('This box is locked');
+    //         return false;
+    //     }
+    //     return true;
+    // }
 }
