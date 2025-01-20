@@ -8,15 +8,15 @@ class BoxCard extends BaseCard {
     getNextCardTypes(direction) {
         if (this.isLocked) {
             if (direction === 'left') {
-                return ['spatial'];
-            } else if (direction === 'right') {
                 return ['item'];
+            } else if (direction === 'right') {
+                return ['spatial'];
             }
         } else {
             if (direction === 'left') {
-                return ['spatial'];
-            } else if (direction === 'right') {
                 return ['item'];
+            } else if (direction === 'right') {
+                return ['spatial'];
             }
         }
         return [];
