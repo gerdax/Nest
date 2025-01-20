@@ -48,14 +48,16 @@ class CardManager {
         const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         let deltaX = currentX - this.startX;
         const maxDragDistance = 75;
-        const fadeStartThreshold = 25; // Start fading after 25px of drag
+        const fadeStartThreshold = 25;
         
         deltaX = Math.max(Math.min(deltaX, maxDragDistance), -maxDragDistance);
         const rotation = deltaX * 0.1;
         const absDeltaX = Math.abs(deltaX);
+        // Calculate Y offset based on drag distance (max 20px up)
+        const deltaY = -20 * (absDeltaX / maxDragDistance);
         const scaleFactor = 100 + Math.min(absDeltaX / 5, 10);
     
-        this.mainCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+        this.mainCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
         this.mainCard.style.backgroundSize = `${scaleFactor}%`;
     
         const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1);
@@ -144,7 +146,8 @@ class CardManager {
     
         this.mainCard.style.transition = 'all 0.3s ease';
         const multiplier = direction === 'right' ? 1 : -1;
-        this.mainCard.style.transform = `translateX(${multiplier * window.innerWidth}px) rotate(${multiplier * 30}deg)`;
+        // Added Y translation and increased rotation
+        this.mainCard.style.transform = `translate(${multiplier * window.innerWidth}px, -${window.innerHeight * 0.3}px) rotate(${multiplier * 45}deg)`;
         this.mainCard.style.opacity = '0';
     
         this.ghostCard.style.transition = 'transform 0.4s ease, opacity 0.4s ease, background-color 0.4s ease';
