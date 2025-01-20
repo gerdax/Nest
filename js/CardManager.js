@@ -66,7 +66,7 @@ class CardManager {
             if (absDeltaX > fadeStartThreshold) {
                 // Calculate fade progress only after threshold
                 const fadeProgress = (absDeltaX - fadeStartThreshold) / (maxDragDistance - fadeStartThreshold);
-                const opacity = 1 - (fadeProgress * 0.75); // Will fade from 1 to 0.25
+                const opacity = 1 - (fadeProgress * 0.5); // Will fade from 1 to 0.25
                 passageText.style.opacity = Math.max(0.25, opacity);
             } else {
                 passageText.style.opacity = 1; // Stay fully visible before threshold
