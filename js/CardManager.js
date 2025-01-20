@@ -47,7 +47,7 @@ class CardManager {
         
         const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         let deltaX = currentX - this.startX;
-        const maxDragDistance = 75; // Reduced from 100 to make text appear earlier
+        const maxDragDistance = 75;
         
         deltaX = Math.max(Math.min(deltaX, maxDragDistance), -maxDragDistance);
         const rotation = deltaX * 0.1;
@@ -57,8 +57,15 @@ class CardManager {
         this.mainCard.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
         this.mainCard.style.backgroundSize = `${scaleFactor}%`;
     
-        const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1); // Adjusted to show text earlier
+        const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1);
         
+        // Control passage text opacity
+        const passageText = document.querySelector('#passage-text');
+        if (passageText) {
+            // Calculate opacity from 1 to 0.25 based on drag progress
+            const opacity = 1 - (totalProgress * 0.5); // This will go from 1 to 0.25
+            passageText.style.opacity = opacity;
+        }
         if (absDeltaX > 0) {
             const scale = 0.85 + ((Math.min(absDeltaX / 100, 1)) * 0.15);
             this.ghostCard.style.opacity = totalProgress * 0.7;
@@ -105,11 +112,17 @@ class CardManager {
         this.mainCard.style.backgroundSize = '100%';
         this.mainCard.style.backgroundPosition = '50% center';
         this.mainCard.style.opacity = '1';
-
+    
         this.ghostCard.style.opacity = '0';
         const choiceText = this.mainCard.querySelector('.choice-text');
         choiceText.classList.remove('left', 'right');
         choiceText.style.opacity = '0';
+    
+        // Reset passage text opacity
+        const passageText = document.querySelector('#passage-text');
+        if (passageText) {
+            passageText.style.opacity = '1';
+        }
     }
     
     transitionToChoice(nextCard, direction) {
@@ -136,5 +149,5 @@ class CardManager {
         setTimeout(() => {
             window.setupCards(nextCard.id);
             nextCard.logCardDetails();
-        }, 400);
+        }, 300);
     }}
