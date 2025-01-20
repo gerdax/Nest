@@ -16,7 +16,7 @@ class BoxCard extends BaseCard {
             if (direction === 'left') {
                 return ['spatial'];
             } else if (direction === 'right') {
-                return ['spatial', 'item'];
+                return ['item'];
             }
         }
         return [];

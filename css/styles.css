@@ -70,7 +70,21 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    /* ... existing styles ... */
+    opacity: 0; /* Start invisible */
+    animation: fadeIn 0.5s ease forwards; /* Add fade-in animation */
 }
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
 
 .card-wrapper {
     position: absolute;
@@ -177,5 +191,5 @@ body {
     background-position: bottom center;
     background-repeat: no-repeat;
     pointer-events: none;
-    z-index: 1;
+    z-index: -1;
 }

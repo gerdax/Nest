@@ -43,11 +43,19 @@ class StoryManager {
             .filter(card => possibleTypes.includes(card.cardType) && card.id !== this.lastShownCardId);
         
         if (possibleCards.length === 0) {
-            return null; // No more cards available
+            return null;
         }
-
-        const nextCard = possibleCards[Math.floor(Math.random() * possibleCards.length)];
-        this.lastShownCardId = nextCard.id; // Update the last shown card ID
+    
+        // Weight cards by inverse rarity (1 is most common, so gets highest weight)
+        const weightedCards = possibleCards.flatMap(card => {
+            // Weight formula: 6-rarity gives weights of 5,4,3,2,1 for rarities 1,2,3,4,5
+            const weight = 6 - card.rarity;
+            // Repeat card in array based on weight
+            return Array(weight).fill(card);
+        });
+    
+        const nextCard = weightedCards[Math.floor(Math.random() * weightedCards.length)];
+        this.lastShownCardId = nextCard.id;
         return nextCard;
     }
 

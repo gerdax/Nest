@@ -6,7 +6,7 @@ class ItemCard extends BaseCard {
     }
 
     getNextCardTypes() {
-        return ['spatial'];
+        return ['spatial', 'item'];
     }
 
     // onAction() {

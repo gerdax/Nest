@@ -8,13 +8,15 @@ class BaseCard {
         this.image = data.backgroundImage;
         this.leftChoice = data.leftChoiceText;
         this.rightChoice = data.rightChoiceText;
+        this.rarity = data.rarity || 1; // Default to common (1) if not specified
+
     }
 
     getNextCardTypes() {
         return [];
     }
     logCardDetails() {
-        console.log(`Card Type: ${this.cardType}, Subtype: ${this.subType}, Name: ${this.id}`);
+        console.log(`Card Type: ${this.cardType}, Subtype: ${this.subType}, Name: ${this.id}, Rarity: ${this.rarity}`);
     }
     // onAction() {
     //     baseCard.logCardDetails(); // Logs: Card Type: base, Subtype: example

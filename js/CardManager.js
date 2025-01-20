@@ -113,6 +113,12 @@ class CardManager {
     }
     
     transitionToChoice(nextCard, direction) {
+        // Remove passage text immediately
+        const passageText = document.querySelector('#passage-text');
+        if (passageText) {
+            passageText.remove();
+        }
+
         if (nextCard.image) {
             this.ghostCard.style.backgroundImage = `url('${nextCard.image}')`;
         }
@@ -129,6 +135,6 @@ class CardManager {
     
         setTimeout(() => {
             window.setupCards(nextCard.id);
-            nextCard.logCardDetails(); // Logs: Card Type and Subtype of the next card
+            nextCard.logCardDetails();
         }, 400);
     }}
