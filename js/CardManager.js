@@ -48,6 +48,7 @@ class CardManager {
         const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
         let deltaX = currentX - this.startX;
         const maxDragDistance = 75;
+        const fadeStartThreshold = 25; // Start fading after 25px of drag
         
         deltaX = Math.max(Math.min(deltaX, maxDragDistance), -maxDragDistance);
         const rotation = deltaX * 0.1;
@@ -59,12 +60,17 @@ class CardManager {
     
         const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1);
         
-        // Control passage text opacity
+        // Control passage text opacity with threshold
         const passageText = document.querySelector('#passage-text');
         if (passageText) {
-            // Calculate opacity from 1 to 0.25 based on drag progress
-            const opacity = 1 - (totalProgress * 0.5); // This will go from 1 to 0.25
-            passageText.style.opacity = opacity;
+            if (absDeltaX > fadeStartThreshold) {
+                // Calculate fade progress only after threshold
+                const fadeProgress = (absDeltaX - fadeStartThreshold) / (maxDragDistance - fadeStartThreshold);
+                const opacity = 1 - (fadeProgress * 0.75); // Will fade from 1 to 0.25
+                passageText.style.opacity = Math.max(0.25, opacity);
+            } else {
+                passageText.style.opacity = 1; // Stay fully visible before threshold
+            }
         }
         if (absDeltaX > 0) {
             const scale = 0.85 + ((Math.min(absDeltaX / 100, 1)) * 0.15);

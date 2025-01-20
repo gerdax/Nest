@@ -1,6 +1,27 @@
 // js/main.js
 let currentCardManager = null;
 
+function typeWords(element, text) {
+    // Clear existing content
+    element.innerHTML = '';
+    
+    // Split text into words
+    const words = text.split(' ');
+    
+    words.forEach((word, index) => {
+        const span = document.createElement('span');
+        span.textContent = word;
+        span.className = 'typing-word';
+        span.style.animationDelay = `${index * 0.15}s`; // Delay each word
+        element.appendChild(span);
+        
+        // Add space after word (except last word)
+        if (index < words.length - 1) {
+            element.appendChild(document.createTextNode(' '));
+        }
+    });
+}
+
 window.setupCards = function(cardId) {
     const container = document.getElementById('card-container');
     if (!container) return;
@@ -21,8 +42,10 @@ window.setupCards = function(cardId) {
     
     const passageText = document.createElement('div');
     passageText.id = 'passage-text';
-    passageText.textContent = passage.text;
     container.appendChild(passageText);
+    
+    // Use typing animation instead of direct text assignment
+    typeWords(passageText, passage.text);
     
     const wrapper = document.createElement('div');
     wrapper.className = 'card-wrapper';

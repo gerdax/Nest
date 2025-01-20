@@ -67,16 +67,28 @@ body {
     width: 80%;
     max-width: 300px;
     min-height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* ... existing styles ... */
-    /* opacity: 0;*/
-    animation: fadeIn 0.5s ease forwards; 
-    transition: opacity 0.3s ease; /* Add smooth transition for drag opacity changes */
-
+    display: block; /* Changed from flex to block */
+    transition: opacity 0.3s ease;
+    line-height: 1.5; /* Added line height */
 }
 
+.typing-word {
+    display: inline-block; /* Added to maintain spacing */
+    opacity: 0;
+    animation: wordFadeIn 0.3s ease forwards;
+    margin-right: 6px;
+}
+
+@keyframes wordFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 /* @keyframes fadeIn {
     from {
         opacity: 0;
