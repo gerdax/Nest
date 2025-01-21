@@ -5,9 +5,9 @@ class ItemCard extends BaseCard {
         this.itemType = this.subType;
     }
 
-    getNextCardTypes() {
-        return ['spatial', 'item'];
-    }
+    // getNextCardTypes() {
+    //     return ['spatial', 'item'];
+    // }
 
     // onAction() {
     //     console.log(`Picked up ${this.subType} item: ${this.id}`);

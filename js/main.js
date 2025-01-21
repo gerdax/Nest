@@ -35,6 +35,13 @@ window.setupCards = function(cardId) {
     const passage = window.storyManager.getPassage(cardId);
     if (!passage) return;
     
+    // Check if we're opening a box
+    if (passage.type === 'box-items') {
+        const carousel = new BoxItemCarousel(container, passage.boxCard, window.storyManager);
+        carousel.setupCarousel();
+        return;
+    }
+    
     const bottomImage = document.createElement('div');
     bottomImage.id = 'bottom-image';
     bottomImage.style.backgroundImage = `url('img/UI.png')`;
@@ -86,3 +93,5 @@ async function initGame() {
 
 // Start the game
 initGame().catch(console.error);
+
+<script src="js/BoxItemCarousel.js"></script>
