@@ -5,16 +5,25 @@ class BoxCard extends BaseCard {
         this.isLocked = this.subType === 'locked';
         this.isEmpty = false;
         this.hasBeenOpened = false;
+        console.log(`Box card created: ${this.id} from BoxCard constructor`);
+        console.log(this.isEmpty)
+    }
+
+    resetBoxState() {
+        this.hasBeenOpened = false;
+        this.isEmpty = false;
+        console.log(`Reset BOX STATE for ${this.id}`);
     }
 
     getNextCardTypes(direction) {
         if (this.isEmpty) {
-            return ['spatial']; // Can only leave if box is empty
+            return ['spatial'];
+
         }
         
-        if (direction === 'left' && !this.hasBeenOpened) {
+        if (direction === 'right' && !this.hasBeenOpened) {
             this.hasBeenOpened = true;
-            return ['box-items']; // Special type to trigger carousel
+            return ['box-items'];
         }
         
         return ['spatial'];

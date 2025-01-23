@@ -9,7 +9,7 @@ class BaseCard {
         this.leftChoice = data.leftChoiceText;
         this.rightChoice = data.rightChoiceText;
         this.rarity = data.rarity || 1; // Default to common (1) if not specified
-
+        console.log(`Created: ${this.id}`);
     }
 
     getNextCardTypes() {

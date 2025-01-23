@@ -140,13 +140,27 @@ class CardManager {
             passageText.remove();
         }
 
+        // For box-items type, we need to transition to carousel
+        if (nextCard.type === 'box-items') {
+            this.mainCard.style.transition = 'all 0.3s ease';
+            const multiplier = direction === 'right' ? 1 : -1;
+            this.mainCard.style.transform = `translate(${multiplier * window.innerWidth}px, -${window.innerHeight * 0.3}px) rotate(${multiplier * 45}deg)`;
+            this.mainCard.style.opacity = '0';
+
+            setTimeout(() => {
+                // Create and setup carousel directly
+                const carousel = new BoxItemCarousel(document.getElementById('card-container'), nextCard.boxCard, this.storyManager);
+                carousel.setupCarousel();
+            }, 300);
+            return;
+        }
+
         if (nextCard.image) {
             this.ghostCard.style.backgroundImage = `url('${nextCard.image}')`;
         }
     
         this.mainCard.style.transition = 'all 0.3s ease';
         const multiplier = direction === 'right' ? 1 : -1;
-        // Added Y translation and increased rotation
         this.mainCard.style.transform = `translate(${multiplier * window.innerWidth}px, -${window.innerHeight * 0.3}px) rotate(${multiplier * 45}deg)`;
         this.mainCard.style.opacity = '0';
     
@@ -157,6 +171,14 @@ class CardManager {
     
         setTimeout(() => {
             window.setupCards(nextCard.id);
-            nextCard.logCardDetails();
+            // Only call logCardDetails if it's a BaseCard instance
+            if (nextCard instanceof BaseCard) {
+                nextCard.logCardDetails();
+            }
+            // Call resetBoxState if nextCard is an instance of BoxCard
+            if (nextCard instanceof BoxCard) {
+                nextCard.resetBoxState();
+                console.log(nextCard)
+            }
         }, 300);
     }}

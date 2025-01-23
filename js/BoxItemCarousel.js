@@ -28,6 +28,9 @@ class BoxItemCarousel {
                 taken: false
             });
         }
+
+        // Log the number of items in the box
+        console.log(`Box contains ${this.items.length} items.`);
     }
 
     setupCarousel() {
@@ -95,7 +98,7 @@ class BoxItemCarousel {
             const deltaY = currentY - this.startY;
             
             if (Math.abs(deltaY) > 100) {
-                if (deltaY > 0) {
+                if (deltaY < 0) {
                     this.closeBox();
                 } else {
                     this.takeItem();
@@ -122,10 +125,12 @@ class BoxItemCarousel {
 
     takeItem() {
         this.items[this.currentIndex].taken = true;
+        console.log(`Item taken: ${this.items[this.currentIndex].id}`);
         const remainingItems = this.items.filter(item => !item.taken);
         
         if (remainingItems.length === 0) {
             this.boxCard.isEmpty = true;
+            console.log('All items taken, box is now empty');
             this.returnToBox();
         } else {
             this.items = remainingItems;
@@ -135,11 +140,13 @@ class BoxItemCarousel {
     }
 
     closeBox() {
+        console.log('Box closed');
         this.returnToBox();
     }
 
     returnToBox() {
         // Return to the box card view
+       // this.boxCard.resetBoxState(); // Reset box state when returning
         window.setupCards(this.boxCard.id);
     }
 

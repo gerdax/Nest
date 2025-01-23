@@ -94,4 +94,3 @@ async function initGame() {
 // Start the game
 initGame().catch(console.error);
 
-<script src="js/BoxItemCarousel.js"></script>

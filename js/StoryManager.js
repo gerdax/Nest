@@ -39,9 +39,10 @@ class StoryManager {
 
     getNextCard(currentCard, direction) {
         const possibleTypes = currentCard.getNextCardTypes(direction);
-        
+
         // Special handling for box opening
         if (possibleTypes.includes('box-items')) {
+         
             return {
                 type: 'box-items',
                 boxCard: currentCard
