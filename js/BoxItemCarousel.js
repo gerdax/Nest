@@ -3,13 +3,13 @@ class BoxItemCarousel {
         this.container = container;
         this.boxCard = boxCard;
         this.storyManager = storyManager;
-        this.items = [];
+        this.items = this.boxCard.getItems().length > 0 ? 
+            this.boxCard.getItems() : 
+            this.initializeBox();
         this.currentIndex = 0;
         this.isDragging = false;
         this.startX = 0;
         this.startY = 0;
-        
-        this.initializeBox();
     }
 
     initializeBox() {
@@ -21,16 +21,19 @@ class BoxItemCarousel {
             .filter(card => card.cardType === 'item');
             
         // Randomly select items for the box
+        const items = [];
         for(let i = 0; i < itemCount; i++) {
             const randomItem = availableItems[Math.floor(Math.random() * availableItems.length)];
-            this.items.push({
+            items.push({
                 ...randomItem,
                 taken: false
             });
         }
 
-        // Log the number of items in the box
-        console.log(`Box contains ${this.items.length} items.`);
+        // Store items in the box card
+        this.boxCard.setItems(items);
+        console.log(`Box contains ${items.length} items.`);
+        return items;
     }
 
     setupCarousel() {
@@ -129,11 +132,12 @@ class BoxItemCarousel {
         const remainingItems = this.items.filter(item => !item.taken);
         
         if (remainingItems.length === 0) {
-            this.boxCard.isEmpty = true;
+            this.boxCard.setItems([]); // Update box to be empty
             console.log('All items taken, box is now empty');
             this.returnToBox();
         } else {
             this.items = remainingItems;
+            this.boxCard.setItems(remainingItems); // Update remaining items
             this.currentIndex = 0;
             this.setupCarousel();
         }
@@ -141,12 +145,11 @@ class BoxItemCarousel {
 
     closeBox() {
         console.log('Box closed');
+        this.boxCard.resetBoxState(); // Only reset hasBeenOpened
         this.returnToBox();
     }
 
     returnToBox() {
-        // Return to the box card view
-       // this.boxCard.resetBoxState(); // Reset box state when returning
         window.setupCards(this.boxCard.id);
     }
 
