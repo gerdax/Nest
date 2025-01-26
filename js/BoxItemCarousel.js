@@ -145,7 +145,7 @@ class BoxItemCarousel {
 
     closeBox() {
         console.log('Box closed');
-        this.boxCard.resetBoxState(); // Only reset hasBeenOpened
+       // this.boxCard.resetBoxState(); // Only reset hasBeenOpened
         this.returnToBox();
     }
 
