@@ -3,6 +3,7 @@ class BoxItemCarousel {
         this.container = container;
         this.boxCard = boxCard;
         this.storyManager = storyManager;
+        // This line ensures we use existing items if available, or initialize new ones if not
         this.items = this.boxCard.getItems().length > 0 ? 
             this.boxCard.getItems() : 
             this.initializeBox();
@@ -133,6 +134,7 @@ class BoxItemCarousel {
         
         if (remainingItems.length === 0) {
             this.boxCard.setItems([]); // Update box to be empty
+            this.boxCard.isEmpty = true;
             console.log('All items taken, box is now empty');
             this.returnToBox();
         } else {
@@ -145,11 +147,12 @@ class BoxItemCarousel {
 
     closeBox() {
         console.log('Box closed');
-       // this.boxCard.resetBoxState(); // Only reset hasBeenOpened
+        this.boxCard.hasBeenOpened = false; // Reset only opened state
         this.returnToBox();
     }
 
     returnToBox() {
+        // Return to the box card view while preserving items
         window.setupCards(this.boxCard.id);
     }
 
