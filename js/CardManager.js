@@ -170,6 +170,7 @@ class CardManager {
         this.ghostCard.classList.add('transitioning');
     
         setTimeout(() => {
+            window.mapManager.advance(nextCard, direction);
             window.setupCards(nextCard.id);
             // Only call logCardDetails if it's a BaseCard instance
             if (nextCard instanceof BaseCard) {

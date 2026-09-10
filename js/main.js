@@ -50,6 +50,10 @@ window.setupCards = function(cardId) {
     const passageText = document.createElement('div');
     passageText.id = 'passage-text';
     container.appendChild(passageText);
+
+    if (passage.cardType === 'spatial') {
+        window.mapManager.render(container);
+    }
     
     // Use typing animation instead of direct text assignment
     typeWords(passageText, passage.text);
@@ -84,6 +88,7 @@ window.setupCards = function(cardId) {
 // Initialize game
 async function initGame() {
     await window.storyManager.loadXLSXStory();
+    window.mapManager.reset(window.storyManager.getPassage(window.storyManager.getStartPassage()));
     const container = document.getElementById('card-container');
     if (container) {
         container.classList.add('active');
@@ -93,4 +98,3 @@ async function initGame() {
 
 // Start the game
 initGame().catch(console.error);
-
