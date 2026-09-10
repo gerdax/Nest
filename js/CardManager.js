@@ -25,8 +25,6 @@ class CardManager {
     }
     
     cleanup() {
-        this.disposed = true;
-        this.diceTest?.finish();
         this.mainCard.removeEventListener('mousedown', this.handleStart);
         document.removeEventListener('mousemove', this.handleMove);
         document.removeEventListener('mouseup', this.handleEnd);
@@ -37,7 +35,6 @@ class CardManager {
     }
     
     handleStart(e) {
-        if (this.busy) return;
         e.preventDefault();
         this.isDragging = true;
         this.startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
@@ -105,48 +102,18 @@ class CardManager {
     
         if (Math.abs(deltaX) > 50) {
             const direction = deltaX > 0 ? 'right' : 'left';
-            this.choose(direction);
+            const nextCard = this.storyManager.getNextCard(this.passage, direction);
+            
+            if (nextCard) {
+                this.transitionToChoice(nextCard, direction);
+            } else {
+                this.resetCard();
+            }
         } else {
             this.resetCard();
         }
     }
         
-    async choose(direction) {
-        if (this.busy || this.disposed) return;
-        this.busy = true;
-        this.resetCard();
-        const locked = this.passage instanceof BoxCard && this.passage.isLocked && !this.passage.hasBeenOpened && !this.passage.isEmpty;
-        const route = this.passage.cardType === 'spatial';
-        if (direction === 'right' && (locked || route)) {
-            if (locked && this.lockFailed) { this.busy = false; return; }
-            this.diceTest = new DiceTest(this.mainCard.parentElement, {
-                title: locked ? 'FORCE THE LOCK' : 'SEARCH THE PASSAGE',
-                target: locked ? 16 : 14,
-                success: locked ? 'The lock gives way. Open the container.' : 'A supply cache lies along your route.',
-                failure: locked ? 'The lock jams. Leave this container behind.' : 'Nothing useful here. Continue through the passage.'
-            });
-            const result = await this.diceTest.wait();
-            if (!result || this.disposed) return;
-            if (locked && !result.success) {
-                this.lockFailed = true;
-                this.passageText.textContent = 'The lock is jammed. Swipe left to move on.';
-                const button = this.mainCard.parentElement.querySelector('.card-test-trigger');
-                if (button) { button.disabled = true; button.textContent = 'Lock jammed · swipe left'; }
-                this.busy = false;
-                return;
-            }
-            if (route) {
-                const type = result.success ? 'box' : 'spatial';
-                const candidates = Array.from(this.storyManager.passages.values()).filter(card => card.cardType === type && card.id !== this.passage.id);
-                const next = candidates[Math.floor(Math.random() * candidates.length)];
-                if (next) { this.transitionToChoice(next, direction); return; }
-            }
-        }
-        const next = this.storyManager.getNextCard(this.passage, direction);
-        if (next) this.transitionToChoice(next, direction);
-        else this.busy = false;
-    }
-
     resetCard() {
         this.mainCard.style.transition = 'transform 0.3s ease, background-size 0.3s ease, background-position 0.3s ease';
         this.mainCard.style.transform = 'none';

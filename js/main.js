@@ -79,14 +79,6 @@ window.setupCards = function(cardId) {
     
     currentCardManager = new CardManager(mainCard, ghostCard, passageText, passage, window.storyManager);
     currentCardManager.initialize();
-    if (passage.cardType === 'spatial' || (passage instanceof BoxCard && passage.isLocked && !passage.isEmpty && !passage.hasBeenOpened)) {
-        const trigger = document.createElement('button');
-        trigger.className = 'card-test-trigger';
-        trigger.textContent = passage.cardType === 'spatial' ? 'Search passage · roll 4d6 ≥ 14' : 'Force lock · roll 4d6 ≥ 16';
-        const manager = currentCardManager;
-        trigger.addEventListener('click', () => manager.choose('right'));
-        wrapper.appendChild(trigger);
-    }
 };
 
 // Initialize game
@@ -101,3 +93,4 @@ async function initGame() {
 
 // Start the game
 initGame().catch(console.error);
+
