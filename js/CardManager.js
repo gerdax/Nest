@@ -8,6 +8,7 @@ class CardManager {
         this.storyManager = storyManager;
         this.isDragging = false;
         this.startX = 0;
+        this.boxSequenceFrame = null;
         
         this.handleStart = this.handleStart.bind(this);
         this.handleMove = this.handleMove.bind(this);
@@ -15,6 +16,7 @@ class CardManager {
     }
     
     initialize() {
+        this.prepareBoxSequence();
         this.mainCard.addEventListener('mousedown', this.handleStart);
         document.addEventListener('mousemove', this.handleMove);
         document.addEventListener('mouseup', this.handleEnd);
@@ -59,6 +61,7 @@ class CardManager {
     
         this.mainCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
         this.mainCard.style.backgroundSize = `${scaleFactor}%`;
+        this.updateBoxSequence(deltaX, maxDragDistance);
     
         const totalProgress = Math.min(absDeltaX / (maxDragDistance * 0.7), 1);
         
@@ -113,6 +116,35 @@ class CardManager {
             this.resetCard();
         }
     }
+
+    prepareBoxSequence() {
+        if (!(this.passage instanceof BoxCard)) return;
+
+        for (let frame = 1; frame <= 11; frame++) {
+            const image = new Image();
+            image.src = this.boxSequenceUrl(frame);
+        }
+        this.setBoxSequenceFrame(6);
+    }
+
+    updateBoxSequence(deltaX, maxDragDistance) {
+        if (!(this.passage instanceof BoxCard)) return;
+
+        const progress = Math.max(-1, Math.min(1, deltaX / maxDragDistance));
+        const frame = Math.max(1, Math.min(11, 6 - Math.round(progress * 5)));
+        this.setBoxSequenceFrame(frame);
+    }
+
+    setBoxSequenceFrame(frame) {
+        if (!(this.passage instanceof BoxCard) || frame === this.boxSequenceFrame) return;
+
+        this.boxSequenceFrame = frame;
+        this.mainCard.style.backgroundImage = `url('${this.boxSequenceUrl(frame)}')`;
+    }
+
+    boxSequenceUrl(frame) {
+        return `img/box_sequence/${String(frame).padStart(2, '0')}.png`;
+    }
         
     resetCard() {
         this.mainCard.style.transition = 'transform 0.3s ease, background-size 0.3s ease, background-position 0.3s ease';
@@ -120,6 +152,7 @@ class CardManager {
         this.mainCard.style.backgroundSize = '100%';
         this.mainCard.style.backgroundPosition = '50% center';
         this.mainCard.style.opacity = '1';
+        this.setBoxSequenceFrame(6);
     
         this.ghostCard.style.opacity = '0';
         const choiceText = this.mainCard.querySelector('.choice-text');
